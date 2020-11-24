@@ -1,2 +1,2 @@
-# study-align-model
+# study-predictor
 
