@@ -28,7 +28,7 @@ The backend relies on FastAPI (https://fastapi.tiangolo.com/).
 
 This tensorflow example is based on https://www.tensorflow.org/tutorials/text/classify_text_with_bert
 
-In particular we use a small-BERT to run a sentiment analysis on IMDB movie reviews. The goal is to infer the rating
+In particular, we use a small-BERT to run a sentiment analysis on IMDB movie reviews. The goal is to infer the rating
 from the movie-review text.
 
 IMDB movie reviews: https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz
@@ -37,10 +37,10 @@ small-Bert pre-processor: https://tfhub.dev/tensorflow/bert_en_uncased_preproces
 
 ## Directories
 
-Important directories are:
+Directories are:
 
 - `code/app/datasets` holds the IMDB movie-reviews 
 - `code/app/model` holds the small-BERT model
 - `code/app/preprocess` holds the BERT pre-processing
 
-Important: Download the files from above and extract them to the directories
+Important: Download the files listed above and extract them to the directories
