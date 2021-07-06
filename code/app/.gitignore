@@ -1,7 +1,7 @@
 model/*
-!model/.gitkeep 
-token_samples
-uploads/*
+!model/.gitkeep
+datasets/*
+!datasets/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

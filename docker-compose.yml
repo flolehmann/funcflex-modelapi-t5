@@ -4,6 +4,7 @@ networks:
     driver: bridge
 services:
   study-predictor:
+    container_name: study-predictor
     build: code
     image: study-predictor
     ports:
@@ -13,7 +14,8 @@ services:
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--debug", "--port", "80", "--reload-dir", "/app"]
     volumes:
       - ./code/app:/app
-  nginx: 
+  nginx:
+    container_name: study-predictor-nginx
     image: nginx:1.19.0-alpine
     volumes:
       - ./loadbalancer/nginx.conf:/etc/nginx/conf.d/default.conf 
