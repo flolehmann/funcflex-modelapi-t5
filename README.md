@@ -24,6 +24,10 @@ The backend relies on FastAPI (https://fastapi.tiangolo.com/).
 2. Run `docker-compose up`
 3. The API will be available at `http://localhost:8008/` a documentation can be found at `http://localhost:8008/docs`
 
+## After modifying requirements.txt:
+
+1. rebuild docker container `docker-compose build`
+
 ## WIP: Tensorflow example
 
 This tensorflow example is based on https://www.tensorflow.org/tutorials/text/classify_text_with_bert

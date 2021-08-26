@@ -4,50 +4,54 @@ import methods
 import schema.prediction
 from starlette import status
 
-from api import utils
 from definitions import MODEL_DIR
 
-import os
-import shutil
+from transformers import T5Tokenizer, T5ForConditionalGeneration
 
-import tensorflow as tf
-import tensorflow_hub as hub
-import tensorflow_text as text
 
 router = APIRouter()
 
 ENTITY = "Machine Learning"
 
 
-@router.get("/test", status_code=status.HTTP_204_NO_CONTENT)
-async def test():
-    utils.test(MODEL_DIR)
-    return
+# load model only once:
 
-
-@router.get("/train", status_code=status.HTTP_204_NO_CONTENT)
-async def train():
-    return
-    #BertExaample
-    #bert.read()
-
+# device = torch.device('cuda')
+# model = T5ForConditionalGeneration.from_pretrained('t5-small').to(device)
+model = T5ForConditionalGeneration.from_pretrained('t5-small')
+tokenizer = T5Tokenizer.from_pretrained('t5-small')
 
 @router.post("/predict", response_model=schema.prediction.PredictionOutput,
              dependencies=[Depends(methods.api_key_authentication)])
 async def predict(data: schema.prediction.PredictionInput):
-    text_input = tf.keras.layers.Input(shape=(), dtype=tf.string)
-    preprocessor = hub.KerasLayer(os.path.join(MODEL_DIR, "bert", "preprocess"))
-    encoder_inputs = preprocessor(text_input)
-    encoder = hub.KerasLayer(os.path.join(MODEL_DIR, "bert", "encoder"), trainable=True)
-    outputs = encoder(encoder_inputs)
-    pooled_output = outputs["pooled_output"]  # [batch_size, 256].
-    sequence_output = outputs["sequence_output"]  # [batch_size, seq_length, 256].
+    print(data)
 
-    print(pooled_output)
-    print(sequence_output)
+    #TODO: Add validator to schema
+    model_function = "summarize"
+    if data.function == "summarization":
+        model_function = "summarize"
+    elif data.function == "translation_en_to_de":
+        model_function = "translate English to German"
+    elif data.function == "translation_en_to_fr":
+        model_function = "translate English to French"
 
-    return
-    #return schema.prediction.PredictionOutput(prediction=results)
+    preprocess_text = data.input.strip().replace("\n", "")
+    t5_prepared_text = model_function + ": " + preprocess_text
+
+    #tokenized_text = tokenizer.encode(t5_prepared_Text, return_tensors="pt").to(device)
+    tokenized_text = tokenizer.encode(t5_prepared_text, return_tensors="pt")
+
+    input_ids = model.generate(tokenized_text,
+                                 min_length=30,
+                                 max_length=500
+                               )
+
+    output = tokenizer.decode(input_ids[0], skip_special_tokens=True)
+
+    return {
+        "prediction": output,
+        "function": data.function
+    }
 
 
 @router.get("/ping", status_code=status.HTTP_204_NO_CONTENT)
