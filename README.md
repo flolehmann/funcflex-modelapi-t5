@@ -7,8 +7,8 @@ The backend relies on FastAPI (https://fastapi.tiangolo.com/).
 
 ## Start developing:
 
-1. Create a new branch for each model. The naming convention is as follows: `mlBackend_modelName`, e.g. `huggingface_GPT2`, 
-   `tensorflow_BERT`
+1. Create a new branch for each model. The naming convention is as follows: `mlBackend_modelName_optionalFunctionName`, e.g. `huggingface_GPT2`, 
+   `tensorflow_BERT`, or `huggingface_T5_summarization`
 2. Inside the directory `code/app` create a `.env` file. Add content as shown below.
    ```
    PUBLIC_PREDICTION = False
