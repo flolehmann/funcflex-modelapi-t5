@@ -10,7 +10,6 @@ PUBLIC_PREDICTION = config("PUBLIC_PREDICTION", cast=bool)
 X_API_KEY = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 
-# TODO: x_api_key dependency should be optional (otherwise public prediction will not work)
 def api_key_authentication(x_api_key: Optional[str] = Security(X_API_KEY)):
     if PUBLIC_PREDICTION:
         return True
