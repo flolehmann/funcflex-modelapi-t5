@@ -1,3 +1,4 @@
+from decouple import config
 from fastapi import Depends, APIRouter, HTTPException
 
 import methods
@@ -12,10 +13,15 @@ router = APIRouter()
 
 ENTITY = "Machine Learning"
 
+STAGE = config("STAGE")
+
 
 # load model only once:
-# generator = pipeline('text-generation', model='EleutherAI/gpt-neo-1.3B', device=0)
-generator = pipeline('text-generation', model='EleutherAI/gpt-neo-1.3B')
+if STAGE == "PROD":
+    generator = pipeline('text-generation', model='EleutherAI/gpt-neo-1.3B', device=0)
+else:
+    generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M')
+
 
 @router.post("/predict", response_model=schema.prediction.PredictionOutput,
              dependencies=[Depends(methods.api_key_authentication)])
