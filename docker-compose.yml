@@ -5,8 +5,8 @@ networks:
 services:
   study-predictor:
     container_name: study-predictor
-    build: code
     image: study-predictor
+    build: code
     ports:
       - "8008:80"
     networks:

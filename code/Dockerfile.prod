@@ -1,0 +1,12 @@
+FROM nvcr.io/nvidia/pytorch:21.07-py3
+
+RUN mkdir /app
+COPY ./app/requirements.prod.txt /app
+RUN pip install --upgrade pip
+RUN pip install -r /app/requirements.prod.txt
+
+COPY ./app /app
+
+# setup python logging environment
+RUN mkdir /var/log/study-predictor
+RUN cat >log.log
