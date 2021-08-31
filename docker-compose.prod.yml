@@ -27,5 +27,5 @@ services:
       - "traefik.port=8088" # port of the traefik instance
       - "traefik.docker.network=traefik-net" # traefik network
       - "traefik.http.routers.study-align-model-t5.rule=PathPrefix(`/t5`)" # URL path to your backend, replace YOUR-BACKEND with an unique string to name your router
-      - "traefik.http.middlewares.strip-t5.prefixes=/t5" # declare strip prefix middleware from above, replace strip-YOUR-PATH with an unique name
+      - "traefik.http.middlewares.strip-t5.stripprefix.prefixes=/t5" # declare strip prefix middleware from above, replace strip-YOUR-PATH with an unique name
       - "traefik.http.routers.study-align-model-t5.middlewares=strip-t5@docker"
