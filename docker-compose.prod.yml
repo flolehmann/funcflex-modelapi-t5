@@ -1,11 +1,11 @@
 version: '3.9'
 networks:
-  study-predictor-network:
+  study-align-model-network:
     driver: bridge
 services:
-  study-predictor:
-    container_name: study-predictor
-    image: study-predictor
+  study-align-model-t5:
+    container_name: study-align-model-t5
+    image: study-align-model-t5
     build:
       context: ./code
       dockerfile: Dockerfile.prod
@@ -18,12 +18,12 @@ services:
     ports:
       - "8008:80"
     networks:
-      - study-predictor-network
+      - study-align-model-network
     command: [ "uvicorn", "main:app", "--host", "0.0.0.0", "--debug", "--port", "80", "--reload-dir", "/app" ]
     volumes:
       - ./code/app:/app
   nginx:
-    container_name: study-predictor-nginx
+    container_name: study-align-model-t5-nginx
     image: nginx:1.19.0-alpine
     volumes:
       - ./loadbalancer/nginx.conf:/etc/nginx/conf.d/default.conf
@@ -34,7 +34,7 @@ services:
       - 8090:8080
       - 444:443
     depends_on:
-      - study-predictor
+      - study-align-model-t5
     networks:
-      - study-predictor-network
+      - study-align-model-network
     
