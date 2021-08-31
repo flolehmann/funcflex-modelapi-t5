@@ -1,7 +1,7 @@
 version: '3.9'
 networks:
-  study-align-model-network:
-    driver: bridge
+  traefik-net:
+    external: true
 services:
   study-align-model-t5:
     container_name: study-align-model-t5
@@ -18,23 +18,14 @@ services:
     ports:
       - "8008:80"
     networks:
-      - study-align-model-network
+      - traefik-net
     command: [ "uvicorn", "main:app", "--host", "0.0.0.0", "--debug", "--port", "80", "--reload-dir", "/app" ]
     volumes:
       - ./code/app:/app
-  nginx:
-    container_name: study-align-model-t5-nginx
-    image: nginx:1.19.0-alpine
-    volumes:
-      - ./loadbalancer/nginx.conf:/etc/nginx/conf.d/default.conf
-    #      - ./nginx/error.log:/etc/nginx/error_log.log
-    #      - ./nginx/cache/:/etc/nginx/cache
-    #      - /etc/letsencrypt/:/etc/letsencrypt/
-    ports:
-      - 8090:8080
-      - 444:443
-    depends_on:
-      - study-align-model-t5
-    networks:
-      - study-align-model-network
-    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=8088" # port of the traefik instance
+      - "traefik.docker.network=traefik-net" # traefik network
+      - "traefik.http.routers.study-align-model-t5.rule=PathPrefix(`/t5`)" # URL path to your backend, replace YOUR-BACKEND with an unique string to name your router
+      - "traefik.http.middlewares.strip-t5.prefixes=/t5" # declare strip prefix middleware from above, replace strip-YOUR-PATH with an unique name
+      - "traefik.http.routers.study-align-model-t5.middlewares=strip-t5@docker"

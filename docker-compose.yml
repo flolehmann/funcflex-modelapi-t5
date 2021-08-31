@@ -24,7 +24,7 @@ services:
 #      - /etc/letsencrypt/:/etc/letsencrypt/
     ports:
       - 8090:8080
-      - 444:443
+    #  - 444:443
     depends_on:
       - study-align-model-t5
     networks:
