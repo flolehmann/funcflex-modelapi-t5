@@ -50,7 +50,7 @@ async def predict(data: schema.prediction.PredictionInput):
 
     input_ids = model.generate(tokenized_text,
                                max_length=75,
-                               num_beams=7,
+                               num_beams=5,
                                no_repeat_ngram_size=2,
                                num_return_sequences=5,
                                early_stopping=True
