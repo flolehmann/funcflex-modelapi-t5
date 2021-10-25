@@ -49,8 +49,8 @@ async def predict(data: schema.prediction.PredictionInput):
         tokenized_text = tokenizer.encode(t5_prepared_text, return_tensors="pt")
 
     input_ids = model.generate(tokenized_text,
-                               max_length=50,
-                               num_beams=5,
+                               max_length=75,
+                               num_beams=7,
                                no_repeat_ngram_size=2,
                                num_return_sequences=5,
                                early_stopping=True
