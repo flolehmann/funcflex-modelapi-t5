@@ -3,9 +3,9 @@ networks:
   traefik-net:
     external: true
 services:
-  study-align-model-t5:
-    container_name: study-align-model-t5
-    image: study-align-model-t5
+  model-api-t5:
+    container_name: model-api-t5
+    image: model-api-t5
     build:
       context: ./code
       dockerfile: Dockerfile.prod
@@ -26,8 +26,8 @@ services:
       - "traefik.enable=true"
       - "traefik.port=8088" # port of the traefik instance
       - "traefik.docker.network=traefik-net" # traefik network
-      - "traefik.http.routers.study-align-model-t5.entrypoints=websecure"
-      - "traefik.http.routers.study-align-model-t5.rule=PathPrefix(`/t5`)" # URL path to your backend, replace YOUR-BACKEND with an unique string to name your router
-      - "traefik.http.routers.study-align-model-t5.tls=true"
+      - "traefik.http.routers.model-api-t5.entrypoints=websecure"
+      - "traefik.http.routers.model-api-t5.rule=PathPrefix(`/t5`)" # URL path to your backend, replace YOUR-BACKEND with an unique string to name your router
+      - "traefik.http.routers.model-api-t5.tls=true"
       - "traefik.http.middlewares.strip-t5.stripprefix.prefixes=/t5" # declare strip prefix middleware from above, replace strip-YOUR-PATH with an unique name
-      - "traefik.http.routers.study-align-model-t5.middlewares=strip-t5@docker"
+      - "traefik.http.routers.model-api-t5.middlewares=strip-t5@docker"
